@@ -14,16 +14,59 @@ function HomeScreen() {
   );
 }
 
+function NewScreen() {
+  return (
+    <View style={styles.container}>
+      <Text>New Screen</Text>
+    </View>
+  );
+}
+
+
+function SettingsScreen() {
+  return (
+    <View style={styles.container}>
+      <Text>Settings Screen</Text>
+    </View>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = focused
+                ? 'ios-information-circle'
+                : 'ios-information-circle-outline';
+            } else if (route.name === 'New') {
+              iconName = focused
+                ? 'ios-list-box'
+                : 'ios-list';
+            } else if (route.name === 'Settings') {
+              iconName = focused
+                ? 'ios-options'
+                : 'ios-options';
+            }
+
+            return <Icon name={iconName} size={size} color={color} />;
+          },
+        })}
+      >
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="New" component={NewScreen} />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
