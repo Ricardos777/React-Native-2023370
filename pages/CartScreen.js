@@ -2,11 +2,35 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const CartScreen = () => {
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    const product = route.params?.product;
+    if (product && !cart.some(item => item.id === product.id)) {
+      setCart(prevCart => [...prevCart, product]);
+    }
+  }, [route.params?.product]);
+
+  const placeOrder = () => {
+    Alert.alert('Order placed successfully!');
+  };
+  
   return (
-    <View style={styles.container}>
-      <Text>Cart Screen</Text>
-    </View>
-  );
+  <View style={styles.container}>
+    <FlatList
+      data={cart}
+      keyExtractor={item => item.id}
+      renderItem={({ item }) => (
+        <View style={styles.itemContainer}>
+          <Image source={{ uri: item.image }} style={styles.image} />
+          <Text style={styles.text}>{item.name}</Text>
+          <Text style={styles.text}>${item.price}</Text>
+        </View>
+      )}
+      ListEmptyComponent={<Text>Your Cart is Empty</Text>}
+    />
+  </View>
+);
 };
 
 const styles = StyleSheet.create({
@@ -14,6 +38,31 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+    itemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: width * 0.9,
+    height: height * 0.1,
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  image: {
+    width:width* 0.2,
+    height:height* 0.1,
+    height: 50,
+    borderRadius: 10,
   },
 });
 
